@@ -20,7 +20,6 @@ public class Bishop extends ChessPiece {
         } else return false;
         return false;
     }
-
     @Override
     public String getSymbol() {
         return "B";
