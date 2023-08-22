@@ -1,3 +1,9 @@
+package package_ChessBoard;
+
+import package_ChessPiece.ChessPiece;
+import package_King.King;
+import package_Rook.Rook;
+
 public class ChessBoard {
     public ChessPiece[][] board = new ChessPiece[8][8];
     String nowPlayer;
@@ -12,7 +18,7 @@ public class ChessBoard {
 
     public boolean moveToPosition(int startLine, int startColumn, int endLine, int endColumn) {
         if (checkPos(startLine) && checkPos(startColumn)) {
-            if (nowPlayer.equals(board[startLine][startColumn].getColor())) return false;
+            if (!nowPlayer.equals(board[startLine][startColumn].getColor())) return false;
             if (board[startLine][startColumn].canMoveToPosition(this, startLine, startColumn, endLine, endColumn)) {
                 board[endLine][endColumn] = board[startLine][startColumn];
                 board[startLine][startColumn] = null;
@@ -30,12 +36,12 @@ public class ChessBoard {
         System.out.println("\t0\t1\t2\t3\t4\t5\t6\t7");
 
         for (int i = 7; i > -1; i--) {
-            System.out.println(i + "\t");
+            System.out.print(i + "\t"); // убрала перенос строки
             for (int j = 0; j < 8; j++) {
                 if (board[i][j] == null) {
-                    System.out.println("--" + "\t");
+                    System.out.print("--" + "\t"); // убрала перенос строки
                 } else {
-                    System.out.println(board[i][j].getSymbol() + board[i][j].getColor().substring(0, 1).toLowerCase() + "\t");
+                    System.out.print(board[i][j].getSymbol() + board[i][j].getColor().substring(0, 1).toLowerCase() + "\t"); // убрала перенос строки
                 }
             }
             System.out.println();
@@ -50,16 +56,16 @@ public class ChessBoard {
     public boolean castling0() {
         if (nowPlayer.equals("White")) {
             if (board[0][0] == null || board[0][4] == null) return false;
-            if (board[0][0].getSymbol().equals("R") && board[0][4].getSymbol().equals("K") && // check that King and Rook
+            if (board[0][0].getSymbol().equals("R") && board[0][4].getSymbol().equals("K") && // check that package_King.King and package_Rook.Rook
                     board[0][1] == null && board[0][2] == null && board[0][3] == null) {              // never moved
                 if (board[0][0].getColor().equals("White") && board[0][4].getColor().equals("White") &&
                         board[0][0].check && board[0][4].check &&
                         !new King("White").isUnderAttack(this, 0, 2)) { // check that position not in under attack
                     board[0][4] = null;
-                    board[0][2] = new King("White");   // move King
+                    board[0][2] = new King("White");   // move package_King.King
                     board[0][2].check = false;
                     board[0][0] = null;
-                    board[0][3] = new Rook("White");   // move Rook
+                    board[0][3] = new Rook("White");   // move package_Rook.Rook
                     board[0][3].check = false;
                     nowPlayer = "Black";  // next turn
                     return true;
@@ -67,16 +73,16 @@ public class ChessBoard {
             } else return false;
         } else {
             if (board[7][0] == null || board[7][4] == null) return false;
-            if (board[7][0].getSymbol().equals("R") && board[7][4].getSymbol().equals("K") && // check that King and Rook
+            if (board[7][0].getSymbol().equals("R") && board[7][4].getSymbol().equals("K") && // check that package_King.King and package_Rook.Rook
                     board[7][1] == null && board[7][2] == null && board[7][3] == null) {              // never moved
                 if (board[7][0].getColor().equals("Black") && board[7][4].getColor().equals("Black") &&
                         board[7][0].check && board[7][4].check &&
                         !new King("Black").isUnderAttack(this, 7, 2)) { // check that position not in under attack
                     board[7][4] = null;
-                    board[7][2] = new King("Black");   // move King
+                    board[7][2] = new King("Black");   // move package_King.King
                     board[7][2].check = false;
                     board[7][0] = null;
-                    board[7][3] = new Rook("Black");   // move Rook
+                    board[7][3] = new Rook("Black");   // move package_Rook.Rook
                     board[7][3].check = false;
                     nowPlayer = "White";  // next turn
                     return true;

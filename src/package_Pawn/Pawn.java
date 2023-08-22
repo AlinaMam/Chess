@@ -1,3 +1,8 @@
+package package_Pawn;
+
+import package_ChessBoard.ChessBoard;
+import package_ChessPiece.ChessPiece;
+
 public class Pawn extends ChessPiece {
     public Pawn(String color) {
         super(color);
