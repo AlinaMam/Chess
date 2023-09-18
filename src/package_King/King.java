@@ -16,41 +16,55 @@ public class King extends ChessPiece {
 
     @Override
     public boolean canMoveToPosition(ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
-        //проверка взаимодействия с фигурами, если поле не null, то ходить на это поле нельзя
-        if (chessBoard.checkPos(toLine) && chessBoard.checkPos(toColumn)) {
-            for (int i = 0; i < 7; i++) {
-                for (int j = 0; j < 7; j++) {
-                    if (chessBoard.board[toLine][toColumn] != null) {
-                        return false;
-                    } else return true;
-                }
-            }
-        }
-
         if (chessBoard.checkPos(toLine) && chessBoard.checkPos(toColumn)) {
             if (!(line == toLine && column == toColumn)) {
                 if ((Math.abs(line - toLine) == 1 && Math.abs(column - toColumn) == 0) || (Math.abs(column - toColumn) == 1 && Math.abs(line - toLine) == 0) ||
                         (Math.abs(line - toLine) == 1 && Math.abs(column - toColumn) == 1)) {
-                    if (chessBoard.board[toLine][toColumn] != null) { //комментарий п.4 - если ячейка не null
-                        return !chessBoard.board[toLine][toColumn].getColor().equals(this.getColor()); //на ней не должно быть фигуры нашего цвета
+                    if (chessBoard.board[toLine][toColumn] != null) {
+                        return !chessBoard.board[toLine][toColumn].getColor().equals(this.getColor());
                     }
                     return true;
                 } else return false;
             } else return false;
         } else return false;
     }
+    public boolean isLineEmpty (ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
+        boolean isEmpty = true;
+
+        int directionLine = Integer.compare(toLine, line);
+        int directionColumn = Integer.compare(toColumn, column);
+        int lineLength = 0;
+
+        if (directionColumn == 0) {
+            lineLength = Math.abs(toLine - line);
+        } else if (directionLine == 0) {
+            lineLength = Math.abs(toColumn - column);
+        } else lineLength = Math.abs(toColumn - column);
+
+        for (int i = 0; i < lineLength; i++) {
+            if (chessBoard.board[line + i * directionLine][column + i * directionColumn] != null) {
+                isEmpty = false;
+                break;
+            }
+        }
+        return isEmpty;
+    }
 
     public boolean isUnderAttack(ChessBoard chessBoard, int line, int column) {
+        boolean isUnderAttack = false;
+
         for (int i = 0; i < 8; i++) {
             for (int j = 0; j < 8; j++) {
                 if (chessBoard.board[i][j] != null) {
-                    if (!chessBoard.board[i][j].getColor().equals(color) && chessBoard.board[i][j].canMoveToPosition(chessBoard, i, j, line, column)) {
-                        return true;
-                    } else return false;
+                    if (!chessBoard.board[i][j].getColor().equals(color)) {
+                        if (chessBoard.board[i][j].canMoveToPosition(chessBoard, i, j, line, column)) {
+                            isUnderAttack = true;
+                        }
+                    }
                 }
             }
         }
-        return false;
+        return isUnderAttack;
     }
 
     @Override

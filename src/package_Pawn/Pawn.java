@@ -2,6 +2,7 @@ package package_Pawn;
 
 import package_ChessBoard.ChessBoard;
 import package_ChessPiece.ChessPiece;
+import package_ChessBoard.ChessBoard;
 
 public class Pawn extends ChessPiece {
     public Pawn(String color) {
@@ -17,35 +18,48 @@ public class Pawn extends ChessPiece {
     public boolean canMoveToPosition(ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
         int startPosition;
         int direction;
-        if ("White".equals(getColor())) {
+
+        if (getColor().equals("White")) {
             startPosition = 1;
             direction = 1;
-        } else if ("Black".equals(getColor())) {
+        } else if (getColor().equals("Black")) {
             startPosition = 6;
             direction = -1;
-        } else return false;
-
-        //проверка взаимодействия с фигурами, если поле не null, то ходить на это поле нельзя
-        if (chessBoard.checkPos(toLine) && chessBoard.checkPos(toColumn)) {
-            for (int i = startPosition; i < 7; i++) {
-                for (int j = startPosition; j < 7; j++) {
-                    if (chessBoard.board[toLine][toColumn] != null) {
-                        return false;
-                    } else return true;
-                }
-            }
+        } else {
+            return false;
         }
 
-        if (chessBoard.checkPos(toLine) && chessBoard.checkPos(toColumn)) { //если нет выхода за пределы шахматной доски
-            if (!(line == toLine && column == toColumn)) { //если пешка не сходила в то же самое поле на котором стоит
-                if (chessBoard.board[toLine][toColumn] == null) { //если на поле нет никакой фигуры
-                    if (column == toColumn && line == startPosition) { //если пешка ходит только по прямой и её позиция = старотовой позиции (т.е. выполняет 1ый ход)
-                        return toLine == line + 2 * direction || toLine == line + direction; //выполняется проверка, что она может сходить на 2 клетки вперед или на одну
-                    } else return toLine == line + direction; //иначе только на одну
-                } else
-                    return !chessBoard.board[toLine][toColumn].getColor().equals(this.getColor()); //иначе должна выполниться проверка, что на клетке не стоит фигура её цвета
-            } else return false; //иначе пешка не может сходить на то же самое поле
-        } else return false; //иначе false, т.к. есть выход на пределы доски
+        if (chessBoard.checkPos(toLine) && chessBoard.checkPos(toColumn)) {
+            if (!(line == toLine && column == toColumn)) {
+                if (chessBoard.board[toLine][toColumn] == null) {
+                    if (column == toColumn && line == startPosition) {
+                        return toLine == line + 2 * direction || toLine == line + direction;
+                    } else return toLine == line + direction;
+                } else return !chessBoard.board[toLine][toColumn].getColor().equals(this.getColor());
+            } else return false;
+        } else return false;
+    }
+
+    public boolean isLineEmpty(ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
+        boolean isEmpty = true;
+
+        int directionLine = Integer.compare(toLine, line);
+        int directionColumn = Integer.compare(toColumn, column);
+        int lineLength = 0;
+
+        if (directionColumn == 0) {
+            lineLength = Math.abs(toLine - line);
+        } else if (directionLine == 0) {
+            lineLength = Math.abs(toColumn - column);
+        } else lineLength = Math.abs(toColumn - column);
+
+        for (int i = 0; i < lineLength; i++) {
+            if (chessBoard.board[line + i * directionLine][column + i * directionColumn] != null) {
+                isEmpty = false;
+                break;
+            }
+        }
+        return isEmpty;
     }
 
     @Override

@@ -9,6 +9,7 @@ public class ChessBoard {
     String nowPlayer;
 
     public ChessBoard(String nowPlayer) {
+
         this.nowPlayer = nowPlayer;
     }
 
