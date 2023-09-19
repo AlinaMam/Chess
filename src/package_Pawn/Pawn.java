@@ -16,54 +16,16 @@ public class Pawn extends ChessPiece {
 
     @Override
     public boolean canMoveToPosition(ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
-        int startPosition;
-        int direction;
-
-        if (getColor().equals("White")) {
-            startPosition = 1;
-            direction = 1;
-        } else if (getColor().equals("Black")) {
-            startPosition = 6;
-            direction = -1;
-        } else {
-            return false;
+        if (!chessBoard.checkPos(toLine) && chessBoard.checkPos(toColumn)) return false;
+        if (line == toLine) return false;
+        if (column != toColumn) return false;
+        if (this.color.equals("White") && line == 1 && toLine == 3) return true;
+        if (this.color.equals("Black") && line == 6 && toLine == 4) return true;
+        if (this.color.equals("White") && toLine - line == 1) return true;
+        return this.color.equals("Black") && toLine - line == -1;
+    }
+        @Override
+        public String getSymbol () {
+            return "P";
         }
-
-        if (chessBoard.checkPos(toLine) && chessBoard.checkPos(toColumn)) {
-            if (!(line == toLine && column == toColumn)) {
-                if (chessBoard.board[toLine][toColumn] == null) {
-                    if (column == toColumn && line == startPosition) {
-                        return toLine == line + 2 * direction || toLine == line + direction;
-                    } else return toLine == line + direction;
-                } else return !chessBoard.board[toLine][toColumn].getColor().equals(this.getColor());
-            } else return false;
-        } else return false;
     }
-
-    public boolean isLineEmpty(ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
-        boolean isEmpty = true;
-
-        int directionLine = Integer.compare(toLine, line);
-        int directionColumn = Integer.compare(toColumn, column);
-        int lineLength = 0;
-
-        if (directionColumn == 0) {
-            lineLength = Math.abs(toLine - line);
-        } else if (directionLine == 0) {
-            lineLength = Math.abs(toColumn - column);
-        } else lineLength = Math.abs(toColumn - column);
-
-        for (int i = 0; i < lineLength; i++) {
-            if (chessBoard.board[line + i * directionLine][column + i * directionColumn] != null) {
-                isEmpty = false;
-                break;
-            }
-        }
-        return isEmpty;
-    }
-
-    @Override
-    public String getSymbol() {
-        return "P";
-    }
-}

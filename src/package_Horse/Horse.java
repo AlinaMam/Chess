@@ -16,38 +16,12 @@ public class Horse extends ChessPiece {
 
     public boolean canMoveToPosition(ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
         if (chessBoard.checkPos(toLine) && chessBoard.checkPos(toColumn)) {
-            if (!(line == toLine && column == toColumn)) {
-                if (!(line == toLine ^ column == toColumn)) {
-                    if (Math.abs(toLine - line) <= 2 && Math.abs(toColumn - column) <= 2) {
-                        if (chessBoard.board[toLine][toColumn] != null) {
-                            return !chessBoard.board[toLine][toColumn].getColor().equals(this.getColor());
-                        } return true;
-                    } else return false;
-                } else return false;
-            } else return false;
-        } else return false;
-    }
-
-    public boolean isLineEmpty(ChessBoard chessBoard, int line, int column, int toLine, int toColumn) {
-        boolean isEmpty = true;
-
-        int directionLine = Integer.compare(toLine, line);
-        int directionColumn = Integer.compare(toColumn, column);
-        int lineLength = 0;
-
-        if (directionColumn == 0) {
-            lineLength = Math.abs(toLine - line);
-        } else if (directionLine == 0) {
-            lineLength = Math.abs(toColumn - column);
-        } else lineLength = Math.abs(toColumn - column);
-
-        for (int i = 0; i < lineLength; i++) {
-            if (chessBoard.board[line + i * directionLine][column + i * directionColumn] != null) {
-                isEmpty = false;
-                break;
-            }
+            return (toLine == line + 2 && (toColumn == column + 1 || toColumn == column - 1)) ||
+                    (toLine == line - 2 && (toColumn == column + 1 || toColumn == column - 1)) ||
+                    (toColumn == column - 2 && (toLine == line + 1 || toLine == line - 1)) ||
+                    (toColumn == column + 2 && (toLine == line + 1 || toLine == line - 1));
         }
-        return isEmpty;
+        return false;
     }
 
     @Override
