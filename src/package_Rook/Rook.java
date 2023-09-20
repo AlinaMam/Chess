@@ -29,8 +29,8 @@ public class Rook extends ChessPiece {
                 }
                 for (int i = 0; i <= 7; i++) {
                     if (secondPoint > firstPoint) {
-                        firstPoint = firstPoint + 1;
-                    } else firstPoint = firstPoint - 1;
+                        firstPoint += 1;
+                    } else firstPoint -= 1;
                     if (firstPoint == secondPoint) {
                         break;
                     }
@@ -43,7 +43,7 @@ public class Rook extends ChessPiece {
                 return true;
             }
         }
-        return false;
+        return true;
     }
 
     @Override

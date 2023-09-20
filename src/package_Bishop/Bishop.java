@@ -23,39 +23,42 @@ public class Bishop extends ChessPiece {
                 //по диагонали вниз и вправо
                 if (toColumn > column && toLine > line) {
                     for (int i = 1; i + column < toColumn; i++) {
-                        if (chessBoard.board[line + i][column + i] == null) {
-                            return true;
-                        } else return !chessBoard.board[line + i][column + i].getColor().equals(this.getColor());
+                        if (chessBoard.board[line + i][column + i] != null) {
+                            return false;
+                        }
                     }
                     return true;
+
                     //по диагонали вниз и влево
                 } else if (toColumn < column && toLine > line) {
                     for (int i = 1; line + i < toLine; i++) {
-                        if (chessBoard.board[line + i][column - i] == null) {
-                            return true;
-                        } else return !chessBoard.board[line + i][column - i].getColor().equals(this.getColor());
+                        if (chessBoard.board[line + i][column - i] != null) {
+                            return false;
+                        }
                     }
                     return true;
+
                     //по диагонали вверх и вправо
                 } else if (toColumn > column && toLine < line) {
                     for (int i = 1; i + column < toColumn; i++) {
-                        if (chessBoard.board[line - i][column + i] == null) {
-                            return true;
-                        } else return !chessBoard.board[line - i][column + i].getColor().equals(this.getColor());
+                        if (chessBoard.board[line - i][column + i] != null) {
+                            return false;
+                        }
                     }
                     return true;
+
                     //по диагонали вверх и влево
                 } else {
                     for (int i = 1; line - i > toLine; i++) {
-                        if (chessBoard.board[line - i][column - i] == null) {
-                            return true;
-                        } else return !chessBoard.board[line - i][column - i].getColor().equals(this.getColor());
+                        if (chessBoard.board[line - i][column - i] != null) {
+                            return false;
+                        }
                     }
                     return true;
                 }
             }
         }
-        return false;
+        return !chessBoard.board[toLine][toColumn].getColor().equals(this.getColor());
     }
     @Override
     public String getSymbol() {
